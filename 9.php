@@ -6,7 +6,7 @@ class Database {
     private string $user = 'your_username';
     private string $pass = 'your_password';
     private string $charset = 'utf8mb4';
-    private ?PDO $pdo = null; // PDO can be null until initialized
+    private ?PDO $pdo = null; 
 
     public function __construct() {
         $dsn = "mysql:host={$this->host};dbname={$this->db};charset={$this->charset}";
@@ -41,32 +41,32 @@ class User {
     }
 
     public function updateUser(int $id, array $data): bool {
-        // Check if the user exists
+        
         $stmt = $this->db->prepare('SELECT COUNT(*) FROM users WHERE id = ?');
         $stmt->execute([$id]);
         $exists = $stmt->fetchColumn();
 
         if (!$exists) {
-            return false; // User not found
+            return false; 
         }
 
-        // Update user data
+        
         $stmt = $this->db->prepare('UPDATE users SET name = ?, email = ? WHERE id = ?');
         return $stmt->execute([$data['name'], $data['email'], $id]);
     }
 }
 
-// Example usage
+
 $database = new Database();
 $user = new User($database);
 
-// Output all users
+
 $users = $user->getAllUsers();
 foreach ($users as $userRecord) {
     echo "ID: " . $userRecord['id'] . " | Name: " . $userRecord['name'] . " | Email: " . $userRecord['email'] . "<br>";
 }
 
-// Update user with ID 1
+
 $updateData = [
     'name' => 'New Name',
     'email' => 'newemail@example.com'
